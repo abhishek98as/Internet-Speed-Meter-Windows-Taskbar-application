@@ -141,14 +141,32 @@ namespace SpeedoMeter
                 Visible = true
             };
 
-            // Load icon (using default if custom icon not available)
+            // Load custom icon
             try
             {
-                _notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+                string iconPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "app.ico");
+                if (System.IO.File.Exists(iconPath))
+                {
+                    _notifyIcon.Icon = new System.Drawing.Icon(iconPath);
+                }
+                else
+                {
+                    // Try to load from embedded resources
+                    var iconStream = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/app.ico"));
+                    if (iconStream != null)
+                    {
+                        _notifyIcon.Icon = new System.Drawing.Icon(iconStream.Stream);
+                    }
+                    else
+                    {
+                        _notifyIcon.Icon = System.Drawing.SystemIcons.Application;
+                    }
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                // Fallback to system icon
+                System.Diagnostics.Debug.WriteLine($"Failed to load icon: {ex.Message}");
+                _notifyIcon.Icon = System.Drawing.SystemIcons.Application;
             }
 
             // Create context menu
@@ -253,6 +271,38 @@ namespace SpeedoMeter
                 opacityMenu.DropDownItems.Add(opacityItem);
             }
             configMenu.DropDownItems.Add(opacityMenu);
+
+            // Refresh Rate submenu
+            var refreshRateMenu = new System.Windows.Forms.ToolStripMenuItem("⚡ Refresh Rate");
+            var refreshRates = new[]
+            {
+                (Label: "10 ms (Very Fast)", Value: 10),
+                (Label: "40 ms (Fast)", Value: 40),
+                (Label: "80 ms (Quick)", Value: 80),
+                (Label: "1 second (Default)", Value: 1000),
+                (Label: "2 seconds (Slow)", Value: 2000),
+                (Label: "3 seconds (Slower)", Value: 3000),
+                (Label: "4 seconds (Very Slow)", Value: 4000),
+                (Label: "5 seconds (Slowest)", Value: 5000)
+            };
+            foreach (var rate in refreshRates)
+            {
+                var refreshItem = new System.Windows.Forms.ToolStripMenuItem(rate.Label)
+                {
+                    Checked = _settings.UpdateIntervalMs == rate.Value,
+                    Tag = rate.Value
+                };
+                refreshItem.Click += (s, e) =>
+                {
+                    var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                    _settings.UpdateIntervalMs = (int)item.Tag!;
+                    _settings.Save();
+                    _networkMonitor.UpdateIntervalMs = _settings.UpdateIntervalMs;
+                    UpdateRefreshRateMenuChecks();
+                };
+                refreshRateMenu.DropDownItems.Add(refreshItem);
+            }
+            configMenu.DropDownItems.Add(refreshRateMenu);
 
             _contextMenu.Items.Add(configMenu);
 
@@ -550,6 +600,31 @@ namespace SpeedoMeter
                     foreach (System.Windows.Forms.ToolStripMenuItem item in opacityMenu.DropDownItems)
                     {
                         item.Checked = Math.Abs(_settings.BackgroundOpacity - (double)item.Tag!) < 0.05;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update refresh rate menu checks
+        /// </summary>
+        private void UpdateRefreshRateMenuChecks()
+        {
+            if (_contextMenu == null) return;
+
+            var configMenu = _contextMenu.Items.Cast<System.Windows.Forms.ToolStripItem>()
+                .FirstOrDefault(i => i.Text == "⚡ Quick Configuration") as System.Windows.Forms.ToolStripMenuItem;
+
+            if (configMenu != null)
+            {
+                var refreshRateMenu = configMenu.DropDownItems.Cast<System.Windows.Forms.ToolStripItem>()
+                    .FirstOrDefault(i => i.Text == "⚡ Refresh Rate") as System.Windows.Forms.ToolStripMenuItem;
+
+                if (refreshRateMenu != null)
+                {
+                    foreach (System.Windows.Forms.ToolStripMenuItem item in refreshRateMenu.DropDownItems)
+                    {
+                        item.Checked = _settings.UpdateIntervalMs == (int)item.Tag!;
                     }
                 }
             }

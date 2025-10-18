@@ -1,0 +1,187 @@
+<Window x:Class="SpeedoMeter.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="SpeedoMeter Settings"
+        Height="550"
+        Width="450"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#F5F5F5">
+
+    <Window.Resources>
+        <Style TargetType="GroupBox">
+            <Setter Property="Margin"
+                    Value="10,5"/>
+            <Setter Property="Padding"
+                    Value="10"/>
+            <Setter Property="Background"
+                    Value="White"/>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Padding"
+                    Value="15,5"/>
+            <Setter Property="Margin"
+                    Value="5"/>
+        </Style>
+    </Window.Resources>
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="10">
+
+            <!-- Appearance Settings -->
+            <GroupBox Header="Appearance">
+                <StackPanel>
+                    <Label Content="Text Color:"/>
+                    <ComboBox x:Name="ColorComboBox"
+                              SelectionChanged="ColorComboBox_SelectionChanged"
+                              Height="25"
+                              Margin="0,0,0,10"/>
+
+                    <Label Content="Font Family:"/>
+                    <ComboBox x:Name="FontFamilyComboBox"
+                              SelectionChanged="FontFamilyComboBox_SelectionChanged"
+                              Height="25"
+                              Margin="0,0,0,10"/>
+
+                    <Label Content="Font Size:"/>
+                    <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,10">
+                        <Slider x:Name="FontSizeSlider"
+                                Width="300"
+                                Minimum="8"
+                                Maximum="16"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                ValueChanged="FontSizeSlider_ValueChanged"
+                                VerticalAlignment="Center"/>
+                        <TextBlock x:Name="FontSizeLabel"
+                                   Text="11"
+                                   Width="30"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+
+                    <Label Content="Background Opacity:"/>
+                    <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,10">
+                        <Slider x:Name="OpacitySlider"
+                                Width="300"
+                                Minimum="0"
+                                Maximum="1"
+                                TickFrequency="0.1"
+                                IsSnapToTickEnabled="True"
+                                ValueChanged="OpacitySlider_ValueChanged"
+                                VerticalAlignment="Center"/>
+                        <TextBlock x:Name="OpacityLabel"
+                                   Text="0.0"
+                                   Width="40"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Display Settings -->
+            <GroupBox Header="Display Options">
+                <StackPanel>
+                    <Label Content="Speed Unit:"/>
+                    <ComboBox x:Name="UnitComboBox"
+                              SelectionChanged="UnitComboBox_SelectionChanged"
+                              Height="25"
+                              Margin="0,0,0,10">
+                        <ComboBoxItem Content="MB/s (Megabytes per second)"/>
+                        <ComboBoxItem Content="Mbps (Megabits per second)"/>
+                    </ComboBox>
+
+                    <Label Content="Decimal Places:"/>
+                    <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,10">
+                        <Slider x:Name="DecimalPlacesSlider"
+                                Width="300"
+                                Minimum="0"
+                                Maximum="3"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                ValueChanged="DecimalPlacesSlider_ValueChanged"
+                                VerticalAlignment="Center"/>
+                        <TextBlock x:Name="DecimalPlacesLabel"
+                                   Text="1"
+                                   Width="30"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+
+                    <CheckBox x:Name="ShowDownloadCheckBox"
+                              Content="Show Download Speed"
+                              IsChecked="True"
+                              Margin="0,5"
+                              Checked="ShowDownloadCheckBox_Changed"
+                              Unchecked="ShowDownloadCheckBox_Changed"/>
+
+                    <CheckBox x:Name="ShowUploadCheckBox"
+                              Content="Show Upload Speed"
+                              IsChecked="True"
+                              Margin="0,5"
+                              Checked="ShowUploadCheckBox_Changed"
+                              Unchecked="ShowUploadCheckBox_Changed"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Performance Settings -->
+            <GroupBox Header="Performance">
+                <StackPanel>
+                    <Label Content="Update Interval (milliseconds):"/>
+                    <StackPanel Orientation="Horizontal"
+                            Margin="0,0,0,10">
+                        <Slider x:Name="UpdateIntervalSlider"
+                                Width="300"
+                                Minimum="1"
+                                Maximum="5"
+                                TickFrequency="1"
+                                IsSnapToTickEnabled="True"
+                                ValueChanged="UpdateIntervalSlider_ValueChanged"
+                                VerticalAlignment="Center"/>
+                        <TextBlock x:Name="UpdateIntervalLabel"
+                                   Text="1"
+                                   Width="30"
+                                   TextAlignment="Right"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock Text="Lower values = more responsive, higher CPU usage"
+                               FontSize="10"
+                               Foreground="Gray"
+                               TextWrapping="Wrap"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- System Settings -->
+            <GroupBox Header="System">
+                <StackPanel>
+                    <CheckBox x:Name="AutoStartCheckBox"
+                              Content="Start with Windows"
+                              Margin="0,5"
+                              Checked="AutoStartCheckBox_Changed"
+                              Unchecked="AutoStartCheckBox_Changed"/>
+                </StackPanel>
+            </GroupBox>
+
+            <!-- Buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Margin="10">
+                <Button Content="Reset to Defaults"
+                        Click="ResetButton_Click"/>
+                <Button Content="Save"
+                        Click="SaveButton_Click"
+                        IsDefault="True"/>
+                <Button Content="Cancel"
+                        Click="CancelButton_Click"
+                        IsCancel="True"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

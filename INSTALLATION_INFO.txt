@@ -1,0 +1,105 @@
+================================================================================
+                    SpeedoMeter Installation Information
+================================================================================
+
+Thank you for choosing SpeedoMeter - Real-time Network Speed Monitor!
+
+WHAT YOU'RE INSTALLING:
+-----------------------
+SpeedoMeter displays your network upload and download speeds directly in the
+Windows taskbar with ultra-responsive 1-5ms updates.
+
+KEY FEATURES:
+-------------
+✓ Real-time network speed monitoring
+✓ Dual unit support (MB/s and Mbps)
+✓ 12 predefined color schemes
+✓ Customizable fonts and sizes
+✓ Drag-and-drop positioning
+✓ Lock/unlock mechanism
+✓ Auto-start with Windows
+✓ System tray integration
+✓ Minimal resource usage (< 20MB RAM, < 1% CPU)
+
+INSTALLATION OPTIONS:
+---------------------
+During installation, you can choose:
+
+1. Installation Location
+   - Default: C:\Program Files\SpeedoMeter
+   - You can select any location you prefer
+
+2. Desktop Shortcut
+   - Creates a convenient desktop icon
+
+3. Auto-start with Windows
+   - SpeedoMeter will launch automatically when Windows starts
+   - You can change this later in the application settings
+
+4. Quick Launch Shortcut
+   - Adds an icon to the Windows Quick Launch toolbar
+
+SYSTEM REQUIREMENTS:
+--------------------
+• Windows 10 (1809 or later) or Windows 11
+• 64-bit operating system
+• Active network connection
+• 50 MB free disk space
+
+This is a self-contained installation that includes all required components.
+No additional software or runtime is needed.
+
+AFTER INSTALLATION:
+-------------------
+1. SpeedoMeter will appear in your taskbar showing network speeds
+2. Right-click the display for quick configuration options
+3. Access full settings by right-clicking and selecting "Settings"
+4. Find documentation in the installation folder or Start Menu
+
+QUICK START:
+------------
+• Move the display: Unlock position, then drag and drop
+• Change colors: Right-click → Quick Configuration → Color Scheme
+• Adjust size: Right-click → Quick Configuration → Font Size
+• Toggle units: Right-click → Toggle Unit (MB/s ↔ Mbps)
+
+DOCUMENTATION:
+--------------
+The following guides are included:
+• README.md - Complete project documentation
+• USERGUIDE.md - Detailed user manual with troubleshooting
+• QUICKSTART.md - Get started in 60 seconds
+• CHANGELOG.md - Version history
+
+SUPPORT:
+--------
+For help, issues, or suggestions:
+• GitHub: https://github.com/abhishek98as/Internet-Speed-Meter-Windows-Taskbar-application
+• Check the User Guide for common solutions
+• Report issues on GitHub Issues page
+
+UNINSTALLATION:
+---------------
+To uninstall SpeedoMeter:
+1. Go to Windows Settings → Apps → Installed apps
+2. Find "SpeedoMeter" and click Uninstall
+   OR
+1. Go to Start Menu → SpeedoMeter → Uninstall SpeedoMeter
+
+During uninstallation, you'll be asked if you want to keep your settings
+for future reinstallations.
+
+PRIVACY:
+--------
+SpeedoMeter operates entirely locally on your computer. No data is collected,
+transmitted, or shared. All settings are stored locally in:
+%APPDATA%\SpeedoMeter\settings.json
+
+LICENSE:
+--------
+SpeedoMeter is licensed under the MIT License.
+Free for personal and commercial use.
+
+================================================================================
+                        Click Next to continue installation
+================================================================================

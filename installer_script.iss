@@ -63,10 +63,12 @@ Source: "README.md"; DestDir: "{app}"; Flags: ignoreversion isreadme
 Source: "CHANGELOG.md"; DestDir: "{app}"; Flags: ignoreversion
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 
+; Icon file
+Source: "Resources\app.ico"; DestDir: "{app}"; Flags: ignoreversion
+
 [Icons]
-Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "{#MyAppDescription}"
+Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "{#MyAppDescription}"; IconFilename: "{app}\app.ico"
 Name: "{group}\README"; Filename: "{app}\README.md"; Comment: "SpeedoMeter Documentation"
-Name: "{group}\Quick Start Guide"; Filename: "{app}\QUICKSTART.md"; Comment: "Quick Start Guide"
 Name: "{group}\Uninstall {#MyAppName}"; Filename: "{uninstallexe}"; Comment: "Uninstall SpeedoMeter"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon; Comment: "{#MyAppDescription}"
 Name: "{userappdata}\Microsoft\Internet Explorer\Quick Launch\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: quicklaunchicon; Comment: "{#MyAppDescription}"

@@ -79,7 +79,7 @@ namespace SpeedoMeter.Models
         /// <summary>
         /// Background opacity (0-1)
         /// </summary>
-        public double BackgroundOpacity { get; set; } = 0.0;
+        public double BackgroundOpacity { get; set; } = 0.3;
 
         /// <summary>
         /// Load settings from file

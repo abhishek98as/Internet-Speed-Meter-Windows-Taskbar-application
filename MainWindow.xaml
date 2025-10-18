@@ -16,7 +16,7 @@
             CornerRadius="3">
         <Border.Background>
             <SolidColorBrush Color="Black"
-                    Opacity="0.0"/>
+                             Opacity="0.3"/>
         </Border.Background>
 
         <TextBlock x:Name="SpeedTextBlock"

@@ -57,9 +57,9 @@ namespace SpeedoMeter.Models
         public bool AutoStart { get; set; } = false;
 
         /// <summary>
-        /// Update interval in milliseconds
+        /// Update interval in milliseconds (default 1000ms for easy readability)
         /// </summary>
-        public int UpdateIntervalMs { get; set; } = 1;
+        public int UpdateIntervalMs { get; set; } = 1000;
 
         /// <summary>
         /// Show upload speed

@@ -8,6 +8,7 @@
     <AssemblyName>SpeedoMeter</AssemblyName>
     <RootNamespace>SpeedoMeter</RootNamespace>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\app.ico</ApplicationIcon>
     <NoWarn>CA1416</NoWarn>
     <Nullable>enable</Nullable>
   </PropertyGroup>

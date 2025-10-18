@@ -37,16 +37,36 @@ A production-ready, high-performance Windows application that displays real-time
 
 ## Installation
 
-### Requirements
-- Windows 10 or Windows 11
-- .NET 8.0 Runtime ([Download here](https://dotnet.microsoft.com/download/dotnet/8.0))
+### 🎯 Easy Installation (Recommended)
 
-### Build from Source
+**Download the Windows Installer** - Professional installer with setup wizard:
+
+1. Download `SpeedoMeter_Setup_v1.0.0.exe`
+2. Run the installer
+3. Choose your installation preferences
+4. Click Install and you're done!
+
+**Features:**
+- ✅ Custom installation path
+- ✅ Desktop shortcut creation
+- ✅ Auto-start with Windows option
+- ✅ Start Menu integration
+- ✅ Clean uninstaller with settings preservation
+
+📖 **See [INSTALLATION.md](INSTALLATION.md) for detailed installation guide**
+
+### 📋 Requirements
+- Windows 10 (version 1809+) or Windows 11
+- 64-bit operating system
+- 50 MB free disk space
+- Self-contained installer - **No .NET runtime required!**
+
+### 🔧 Build from Source
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/speedometer.git
-   cd speedometer
+   git clone https://github.com/abhishek98as/Internet-Speed-Meter-Windows-Taskbar-application.git
+   cd SpeedoMeter
    ```
 
 2. **Build the project**
@@ -68,12 +88,29 @@ A production-ready, high-performance Windows application that displays real-time
 2. Right-click the display to access the context menu
 3. Select **Settings** to customize appearance and behavior
 
-### Context Menu Options
-- **Settings**: Open the configuration window
-- **Lock Position**: Toggle position locking on/off
-- **Toggle Unit**: Switch between MB/s and Mbps
-- **Auto-start with Windows**: Enable/disable startup with Windows
-- **Exit**: Close the application
+### 🎨 Enhanced Context Menu
+
+Right-click the display for comprehensive quick access:
+
+**⚡ Quick Configuration** (NEW!)
+- **🎨 Color Scheme** - 12 colors with instant preview
+- **📏 Font Size** - 9 preset sizes (8-16px)
+- **🔢 Decimal Places** - 0-3 decimals
+- **👁 Background Opacity** - 11 levels (0-100%)
+
+**📊 Display Options** (NEW!)
+- Toggle download speed display
+- Toggle upload speed display
+
+**Standard Options**
+- **⚙ Settings** - Full configuration window
+- **🔒 Lock Position** - Prevent accidental movement
+- **🔄 Toggle Unit** - Switch MB/s ↔ Mbps instantly
+- **🚀 Auto-start** - Launch with Windows
+- **ℹ About** - Version and info
+- **❌ Exit** - Close application
+
+📖 **See [CONTEXT_MENU_GUIDE.md](CONTEXT_MENU_GUIDE.md) for detailed context menu features**
 
 ### Customization
 
@@ -260,5 +297,6 @@ For issues, questions, or suggestions:
 ---
 
 **Made with ❤️ for Windows power users**
-#   I n t e r n e t - S p e e d - M e t e r - W i n d o w s - T a s k b a r - a p p l i c a t i o n  
+#   I n t e r n e t - S p e e d - M e t e r - W i n d o w s - T a s k b a r - a p p l i c a t i o n 
+ 
  

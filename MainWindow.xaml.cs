@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -153,13 +154,161 @@ namespace SpeedoMeter
             // Create context menu
             _contextMenu = new System.Windows.Forms.ContextMenuStrip();
 
-            var settingsItem = new System.Windows.Forms.ToolStripMenuItem("Settings");
+            // Settings (main)
+            var settingsItem = new System.Windows.Forms.ToolStripMenuItem("⚙ Settings...");
             settingsItem.Click += (s, e) => OpenSettings();
             _contextMenu.Items.Add(settingsItem);
 
             _contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
 
-            var lockItem = new System.Windows.Forms.ToolStripMenuItem("Lock Position")
+            // Quick Configuration submenu
+            var configMenu = new System.Windows.Forms.ToolStripMenuItem("⚡ Quick Configuration");
+
+            // Color schemes submenu
+            var colorMenu = new System.Windows.Forms.ToolStripMenuItem("🎨 Color Scheme");
+            string[] colorNames = { "Bright Green", "Cyan", "Magenta", "Yellow", "Orange",
+                                   "White", "Red", "Sky Blue", "Purple", "Mint Green", "Pink", "Light Gray" };
+            for (int i = 0; i < ColorSchemes.Colors.Length; i++)
+            {
+                string color = ColorSchemes.Colors[i];
+                string name = colorNames[i];
+                var colorItem = new System.Windows.Forms.ToolStripMenuItem(name)
+                {
+                    Checked = _settings.TextColor == color,
+                    Tag = color
+                };
+                colorItem.Click += (s, e) =>
+                {
+                    var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                    _settings.TextColor = item.Tag!.ToString()!;
+                    _settings.Save();
+                    ApplySettings();
+                    UpdateColorMenuChecks();
+                };
+                colorMenu.DropDownItems.Add(colorItem);
+            }
+            configMenu.DropDownItems.Add(colorMenu);
+
+            // Font size submenu
+            var fontSizeMenu = new System.Windows.Forms.ToolStripMenuItem("📏 Font Size");
+            int[] fontSizes = { 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+            foreach (int size in fontSizes)
+            {
+                var sizeItem = new System.Windows.Forms.ToolStripMenuItem($"{size} px")
+                {
+                    Checked = Math.Abs(_settings.FontSize - size) < 0.5,
+                    Tag = size
+                };
+                sizeItem.Click += (s, e) =>
+                {
+                    var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                    _settings.FontSize = (int)item.Tag!;
+                    _settings.Save();
+                    ApplySettings();
+                    UpdateFontSizeMenuChecks();
+                };
+                fontSizeMenu.DropDownItems.Add(sizeItem);
+            }
+            configMenu.DropDownItems.Add(fontSizeMenu);
+
+            // Decimal places submenu
+            var decimalMenu = new System.Windows.Forms.ToolStripMenuItem("🔢 Decimal Places");
+            for (int i = 0; i <= 3; i++)
+            {
+                int places = i;
+                var decimalItem = new System.Windows.Forms.ToolStripMenuItem($"{places} decimal{(places == 1 ? "" : "s")}")
+                {
+                    Checked = _settings.DecimalPlaces == places,
+                    Tag = places
+                };
+                decimalItem.Click += (s, e) =>
+                {
+                    var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                    _settings.DecimalPlaces = (int)item.Tag!;
+                    _settings.Save();
+                    UpdateDecimalMenuChecks();
+                };
+                decimalMenu.DropDownItems.Add(decimalItem);
+            }
+            configMenu.DropDownItems.Add(decimalMenu);
+
+            // Opacity submenu
+            var opacityMenu = new System.Windows.Forms.ToolStripMenuItem("👁 Background Opacity");
+            double[] opacities = { 0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0 };
+            foreach (double opacity in opacities)
+            {
+                var opacityItem = new System.Windows.Forms.ToolStripMenuItem($"{(int)(opacity * 100)}%")
+                {
+                    Checked = Math.Abs(_settings.BackgroundOpacity - opacity) < 0.05,
+                    Tag = opacity
+                };
+                opacityItem.Click += (s, e) =>
+                {
+                    var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                    _settings.BackgroundOpacity = (double)item.Tag!;
+                    _settings.Save();
+                    ApplySettings();
+                    UpdateOpacityMenuChecks();
+                };
+                opacityMenu.DropDownItems.Add(opacityItem);
+            }
+            configMenu.DropDownItems.Add(opacityMenu);
+
+            _contextMenu.Items.Add(configMenu);
+
+            _contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+
+            // Display options
+            var displayMenu = new System.Windows.Forms.ToolStripMenuItem("📊 Display Options");
+
+            var showDownloadItem = new System.Windows.Forms.ToolStripMenuItem("Show Download Speed")
+            {
+                Checked = _settings.ShowDownloadSpeed,
+                CheckOnClick = true
+            };
+            showDownloadItem.Click += (s, e) =>
+            {
+                var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                if (!item.Checked && !_settings.ShowUploadSpeed)
+                {
+                    System.Windows.Forms.MessageBox.Show("At least one speed must be visible!",
+                        "SpeedoMeter", System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    item.Checked = true;
+                    return;
+                }
+                _settings.ShowDownloadSpeed = item.Checked;
+                _settings.Save();
+            };
+            displayMenu.DropDownItems.Add(showDownloadItem);
+
+            var showUploadItem = new System.Windows.Forms.ToolStripMenuItem("Show Upload Speed")
+            {
+                Checked = _settings.ShowUploadSpeed,
+                CheckOnClick = true
+            };
+            showUploadItem.Click += (s, e) =>
+            {
+                var item = (System.Windows.Forms.ToolStripMenuItem)s!;
+                if (!item.Checked && !_settings.ShowDownloadSpeed)
+                {
+                    System.Windows.Forms.MessageBox.Show("At least one speed must be visible!",
+                        "SpeedoMeter", System.Windows.Forms.MessageBoxButtons.OK,
+                        System.Windows.Forms.MessageBoxIcon.Warning);
+                    item.Checked = true;
+                    return;
+                }
+                _settings.ShowUploadSpeed = item.Checked;
+                _settings.Save();
+            };
+            displayMenu.DropDownItems.Add(showUploadItem);
+
+            _contextMenu.Items.Add(displayMenu);
+
+            _contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
+
+            // Position lock
+            var lockItem = new System.Windows.Forms.ToolStripMenuItem("🔒 Lock Position")
             {
                 Checked = _settings.IsPositionLocked,
                 CheckOnClick = true
@@ -167,11 +316,13 @@ namespace SpeedoMeter
             lockItem.Click += (s, e) => ToggleLock();
             _contextMenu.Items.Add(lockItem);
 
-            var toggleUnitItem = new System.Windows.Forms.ToolStripMenuItem("Toggle Unit (MB/s ↔ Mbps)");
+            // Toggle unit
+            var toggleUnitItem = new System.Windows.Forms.ToolStripMenuItem("🔄 Toggle Unit (MB/s ↔ Mbps)");
             toggleUnitItem.Click += (s, e) => ToggleUnit();
             _contextMenu.Items.Add(toggleUnitItem);
 
-            var autoStartItem = new System.Windows.Forms.ToolStripMenuItem("Auto-start with Windows")
+            // Auto-start
+            var autoStartItem = new System.Windows.Forms.ToolStripMenuItem("🚀 Auto-start with Windows")
             {
                 Checked = _settings.AutoStart,
                 CheckOnClick = true
@@ -181,7 +332,13 @@ namespace SpeedoMeter
 
             _contextMenu.Items.Add(new System.Windows.Forms.ToolStripSeparator());
 
-            var exitItem = new System.Windows.Forms.ToolStripMenuItem("Exit");
+            // About
+            var aboutItem = new System.Windows.Forms.ToolStripMenuItem("ℹ About SpeedoMeter");
+            aboutItem.Click += (s, e) => ShowAbout();
+            _contextMenu.Items.Add(aboutItem);
+
+            // Exit
+            var exitItem = new System.Windows.Forms.ToolStripMenuItem("❌ Exit");
             exitItem.Click += (s, e) => ExitApplication();
             _contextMenu.Items.Add(exitItem);
 
@@ -296,6 +453,129 @@ namespace SpeedoMeter
         {
             ApplySettings();
             _networkMonitor.UpdateIntervalMs = _settings.UpdateIntervalMs;
+        }
+
+        /// <summary>
+        /// Update color menu checks
+        /// </summary>
+        private void UpdateColorMenuChecks()
+        {
+            if (_contextMenu == null) return;
+
+            var configMenu = _contextMenu.Items.Cast<System.Windows.Forms.ToolStripItem>()
+                .FirstOrDefault(i => i.Text == "⚡ Quick Configuration") as System.Windows.Forms.ToolStripMenuItem;
+
+            if (configMenu != null)
+            {
+                var colorMenu = configMenu.DropDownItems.Cast<System.Windows.Forms.ToolStripItem>()
+                    .FirstOrDefault(i => i.Text == "🎨 Color Scheme") as System.Windows.Forms.ToolStripMenuItem;
+
+                if (colorMenu != null)
+                {
+                    foreach (System.Windows.Forms.ToolStripMenuItem item in colorMenu.DropDownItems)
+                    {
+                        item.Checked = item.Tag?.ToString() == _settings.TextColor;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update font size menu checks
+        /// </summary>
+        private void UpdateFontSizeMenuChecks()
+        {
+            if (_contextMenu == null) return;
+
+            var configMenu = _contextMenu.Items.Cast<System.Windows.Forms.ToolStripItem>()
+                .FirstOrDefault(i => i.Text == "⚡ Quick Configuration") as System.Windows.Forms.ToolStripMenuItem;
+
+            if (configMenu != null)
+            {
+                var fontSizeMenu = configMenu.DropDownItems.Cast<System.Windows.Forms.ToolStripItem>()
+                    .FirstOrDefault(i => i.Text == "📏 Font Size") as System.Windows.Forms.ToolStripMenuItem;
+
+                if (fontSizeMenu != null)
+                {
+                    foreach (System.Windows.Forms.ToolStripMenuItem item in fontSizeMenu.DropDownItems)
+                    {
+                        item.Checked = Math.Abs(_settings.FontSize - (int)item.Tag!) < 0.5;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update decimal menu checks
+        /// </summary>
+        private void UpdateDecimalMenuChecks()
+        {
+            if (_contextMenu == null) return;
+
+            var configMenu = _contextMenu.Items.Cast<System.Windows.Forms.ToolStripItem>()
+                .FirstOrDefault(i => i.Text == "⚡ Quick Configuration") as System.Windows.Forms.ToolStripMenuItem;
+
+            if (configMenu != null)
+            {
+                var decimalMenu = configMenu.DropDownItems.Cast<System.Windows.Forms.ToolStripItem>()
+                    .FirstOrDefault(i => i.Text == "🔢 Decimal Places") as System.Windows.Forms.ToolStripMenuItem;
+
+                if (decimalMenu != null)
+                {
+                    foreach (System.Windows.Forms.ToolStripMenuItem item in decimalMenu.DropDownItems)
+                    {
+                        item.Checked = _settings.DecimalPlaces == (int)item.Tag!;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Update opacity menu checks
+        /// </summary>
+        private void UpdateOpacityMenuChecks()
+        {
+            if (_contextMenu == null) return;
+
+            var configMenu = _contextMenu.Items.Cast<System.Windows.Forms.ToolStripItem>()
+                .FirstOrDefault(i => i.Text == "⚡ Quick Configuration") as System.Windows.Forms.ToolStripMenuItem;
+
+            if (configMenu != null)
+            {
+                var opacityMenu = configMenu.DropDownItems.Cast<System.Windows.Forms.ToolStripItem>()
+                    .FirstOrDefault(i => i.Text == "👁 Background Opacity") as System.Windows.Forms.ToolStripMenuItem;
+
+                if (opacityMenu != null)
+                {
+                    foreach (System.Windows.Forms.ToolStripMenuItem item in opacityMenu.DropDownItems)
+                    {
+                        item.Checked = Math.Abs(_settings.BackgroundOpacity - (double)item.Tag!) < 0.05;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Show about dialog
+        /// </summary>
+        private void ShowAbout()
+        {
+            string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "1.0.0";
+            string message = $"SpeedoMeter v{version}\n\n" +
+                           "Real-time network speed monitor for Windows\n\n" +
+                           "Features:\n" +
+                           "• Ultra-responsive 1-5ms updates\n" +
+                           "• MB/s and Mbps display modes\n" +
+                           "• 12 color schemes\n" +
+                           "• Customizable fonts and sizes\n" +
+                           "• Drag-and-drop positioning\n" +
+                           "• Auto-start with Windows\n\n" +
+                           "© 2025 SpeedoMeter\n" +
+                           "MIT License";
+
+            System.Windows.Forms.MessageBox.Show(message, "About SpeedoMeter",
+                System.Windows.Forms.MessageBoxButtons.OK,
+                System.Windows.Forms.MessageBoxIcon.Information);
         }
 
         /// <summary>

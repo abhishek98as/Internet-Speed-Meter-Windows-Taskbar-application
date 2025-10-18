@@ -50,9 +50,9 @@ namespace SpeedoMeter.Services
         public double UploadMbps => (UploadBytesPerSecond * 8) / (1000 * 1000);
 
         /// <summary>
-        /// Update interval in milliseconds (1-5ms for ultra-responsive monitoring)
+        /// Update interval in milliseconds (default 1000ms for easy readability)
         /// </summary>
-        public int UpdateIntervalMs { get; set; } = 1;
+        public int UpdateIntervalMs { get; set; } = 1000;
 
         /// <summary>
         /// Event raised when speed values are updated

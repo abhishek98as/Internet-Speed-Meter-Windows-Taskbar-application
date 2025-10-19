@@ -16,12 +16,12 @@
             CornerRadius="3">
         <Border.Background>
             <SolidColorBrush Color="Black"
-                             Opacity="0.3"/>
+                             Opacity="0.8"/>
         </Border.Background>
 
         <TextBlock x:Name="SpeedTextBlock"
                    FontFamily="Consolas"
-                   FontSize="11"
+                   FontSize="20"
                    Foreground="#00FF00"
                    Text="↓0.0MB/s ↑0.0MB/s"
                    TextAlignment="Center"

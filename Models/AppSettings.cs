@@ -44,7 +44,7 @@ namespace SpeedoMeter.Models
         /// <summary>
         /// Font size in pixels
         /// </summary>
-        public double FontSize { get; set; } = 11;
+        public double FontSize { get; set; } = 20;
 
         /// <summary>
         /// Display unit (MB/s or Mbps)
@@ -79,7 +79,7 @@ namespace SpeedoMeter.Models
         /// <summary>
         /// Background opacity (0-1)
         /// </summary>
-        public double BackgroundOpacity { get; set; } = 0.3;
+        public double BackgroundOpacity { get; set; } = 0.8;
 
         /// <summary>
         /// Load settings from file

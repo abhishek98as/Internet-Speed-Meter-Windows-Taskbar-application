@@ -73,7 +73,7 @@ namespace SpeedoMeter
             // Color
             SpeedTextBlock.Foreground = _settings.GetBrush();
 
-            // Background opacity
+            // Background opacity - FIX: Use MainBorder.Background, not this.Background
             if (MainBorder.Background is SolidColorBrush brush)
             {
                 brush.Opacity = _settings.BackgroundOpacity;

@@ -21,7 +21,9 @@ namespace SpeedoMeter.Services
         {
             try
             {
-                string exePath = Process.GetCurrentProcess().MainModule?.FileName ?? Assembly.GetExecutingAssembly().Location;
+                // For single-file apps, use AppContext.BaseDirectory instead of Assembly.Location
+                string exePath = Process.GetCurrentProcess().MainModule?.FileName ?? 
+                                 Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.exe");
 
                 // Handle .dll case for .NET Core/5+
                 if (exePath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))

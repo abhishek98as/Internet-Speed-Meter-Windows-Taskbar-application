@@ -11,6 +11,11 @@
     <ApplicationIcon>Resources\app.ico</ApplicationIcon>
     <NoWarn>CA1416</NoWarn>
     <Nullable>enable</Nullable>
+    
+    <!-- Single-file publish configuration -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <SelfContained>true</SelfContained>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
   </PropertyGroup>
 
   <ItemGroup>
